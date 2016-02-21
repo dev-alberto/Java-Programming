@@ -11,7 +11,7 @@ public class Euler {
         grecoLatinSquare[i][j][0] is a latin letter
         grecoLatinSquare[i][j][0] is a greek letter or number
     */
-    private static final int  SIZE = 6;
+    private static final int  SIZE = 4;
     private static char [][][] grecoLatinSquare = new char[SIZE][SIZE][2];
     private static long numerOfGrecoLatinSquare = 0;
     private static Boolean [][] latinLettersUsedForEachRow = new Boolean[SIZE][SIZE];
@@ -20,28 +20,35 @@ public class Euler {
     private static Boolean [][] grecoLettersUsedForEachColum = new Boolean[SIZE][SIZE];
     private static Boolean [][] latinGrecoPair = new Boolean[SIZE][SIZE];
 
-    private static void circularPermutationToLeft(int line, int character) {
-        char auxiliary = grecoLatinSquare[line - 1][0][character];
-        for (int j = 0; j < size -1 ; ++j) {
-            grecoLatinSquare[line][j][character] = grecoLatinSquare[line-1][j + 1][character];
+    private static void circularPermutationToLeft(char [][][] gLSquare, int line, int character,int newSize) {
+        char auxiliary = gLSquare[line - 1][0][character];
+        for (int j = 0; j < newSize -1 ; ++j) {
+            gLSquare[line][j][character] = gLSquare[line-1][j + 1][character];
         }
-        grecoLatinSquare[line][size - 1][character] = auxiliary;
+        gLSquare[line][newSize - 1][character] = auxiliary;
     }
 
-    private static void circularPermutationToRight(int line, int character) {
-        char auxiliary = grecoLatinSquare[line - 1][size - 1][character];
-        for (int j = 1; j < size; ++j) {
-            grecoLatinSquare[line][j][character] = grecoLatinSquare[line - 1][j - 1][character];
+    private static void circularPermutationToRight(char [][][] gLSquare,int line, int character,int newSize) {
+        char auxiliary = gLSquare[line - 1][newSize - 1][character];
+        for (int j = 1; j < newSize; ++j) {
+            gLSquare[line][j][character] = gLSquare[line - 1][j - 1][character];
         }
-        grecoLatinSquare[line][0][character] = auxiliary;
+        gLSquare[line][0][character] = auxiliary;
     }
 
     public static void create() {
         for (int i = 1; i < size; ++i) {
-            circularPermutationToRight(i, 1);
-            circularPermutationToLeft(i, 0);
+            circularPermutationToRight(grecoLatinSquare,i, 1,size);
+            circularPermutationToLeft(grecoLatinSquare,i, 0,size);
         }
-
+        for(int i=0;i<size;i++){
+            for(int j=0;j<size;j++) {
+                for (int k = 0; k < 2; k++) {
+                    System.out.print(grecoLatinSquare[i][j][k] + " ");
+                }
+            }
+            System.out.println();
+        }
     }
 
     private static int get_colum(int h) {
@@ -99,6 +106,29 @@ public class Euler {
             }
         }
     }
+    public static void printExample() {
+        char[][][] example = new char[3][3][2];
+        for (int j = 0; j < 3; j++) {
+            example[0][j][0] = (char) ('A' + j);
+        }
+        example[0][0][1]='\u03B1';
+        example[0][1][1]= (char)  ('\u03B1' +2);
+        example[0][2][1]=(char)  ('\u03B1' +1);
+
+            for (int i = 1; i < 3; ++i) {
+                circularPermutationToRight(example, i, 1, 3);
+                circularPermutationToLeft(example, i, 0, 3);
+            }
+            for(int i=0;i<3;i++){
+                for(int j=0;j<3;j++) {
+                    for (int k = 0; k < 2; k++) {
+                        System.out.print(example[i][j][k] + " ");
+                    }
+                }
+                System.out.println();
+            }
+        }
+
     public static void ConstructFirstLine(String [] args) {
         size = Integer.parseInt(args[0]);
         if (size<3)
@@ -115,9 +145,10 @@ public class Euler {
     public static void main(String [] args) {
         int start=(int) System.currentTimeMillis();
         ConstructFirstLine(args);
+        System.out.println("Greco-latin square from given example: \n" );
+        printExample();
         System.out.println("One greco-latin square of requested size: \n" );
         create();
-        System.out.println(Arrays.deepToString(grecoLatinSquare));
         System.out.println("Trying to count here all of them, be patient...\n");
         InitializeMatrixes();
         NumberGrecoLatinSquares(0);
