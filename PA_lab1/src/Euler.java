@@ -6,12 +6,12 @@
 import java.lang.reflect.Array;
 import java.util.*;
 public class Euler {
-    private static int size = 0;
+    private static int size = 4;
     /*
         grecoLatinSquare[i][j][0] is a latin letter
         grecoLatinSquare[i][j][0] is a greek letter or number
     */
-    private static final int  SIZE = 4;
+    private static final int  SIZE = 5;
     private static char [][][] grecoLatinSquare = new char[SIZE][SIZE][2];
     private static long numerOfGrecoLatinSquare = 0;
     private static Boolean [][] latinLettersUsedForEachRow = new Boolean[SIZE][SIZE];
@@ -36,7 +36,7 @@ public class Euler {
         gLSquare[line][0][character] = auxiliary;
     }
 
-    public static void create() {
+    public static void create() { //aici e problema :(
         for (int i = 1; i < size; ++i) {
             circularPermutationToRight(grecoLatinSquare,i, 1,size);
             circularPermutationToLeft(grecoLatinSquare,i, 0,size);
@@ -72,7 +72,7 @@ public class Euler {
     }
 
     private static void NumberGrecoLatinSquares(int h) {
-        if (h == size * size) {
+        if (h == size * (size-1)) {
             ++numerOfGrecoLatinSquare;
         }
         else {
@@ -85,16 +85,12 @@ public class Euler {
                     latinLettersUsedForEachColum[colum][latin] = true;
 
                     for (int greco = 0; greco < size; ++greco) {
-                        if (!grecoLettersUsedForEachRow[row][greco] && !grecoLettersUsedForEachColum[colum][greco]) {
+                        if (!grecoLettersUsedForEachRow[row][greco] && !grecoLettersUsedForEachColum[colum][greco] && !latinGrecoPair[latin][greco]) {
                             grecoLettersUsedForEachRow[row][greco] = true;
                             grecoLettersUsedForEachColum[colum][greco] = true;
-
-                            if (!latinGrecoPair[latin][greco]) {
                                 latinGrecoPair[latin][greco] = true;
                                 NumberGrecoLatinSquares(h + 1);
                                 latinGrecoPair[latin][greco] = false;
-                            }
-
                             grecoLettersUsedForEachRow[row][greco] = false;
                             grecoLettersUsedForEachColum[colum][greco] = false;
                         }
@@ -152,7 +148,7 @@ public class Euler {
         System.out.println("Trying to count here all of them, be patient...\n");
         InitializeMatrixes();
         NumberGrecoLatinSquares(0);
-        System.out.println(numerOfGrecoLatinSquare);
+        System.out.println("Final count: " + numerOfGrecoLatinSquare);
         System.out.println("Running time= " + ((int) System.currentTimeMillis() - start) + "\n");
     }
 }
