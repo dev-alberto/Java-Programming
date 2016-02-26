@@ -1,12 +1,22 @@
+import java.util.Date;
 
 public abstract class Persons {
-    private String email;
-    private String name;
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected String telephoneNumber;
+    protected Date dateOfBirth;
 
-    public Persons(){}
-    public String getEmail(){return email;}
-    public String getName(){return name;}
-    public void setEmail(String newEmail){email=newEmail;}
-    public void setName(String newName){name=newName;}
+    public Persons() {
+    }
+
+    public Persons(String firstName, String lastName, String email, String telephoneNumber, Date dateOfBirth){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.telephoneNumber = telephoneNumber;
+        this.dateOfBirth = dateOfBirth;
+    }
+
     protected abstract void isFree();
 }
