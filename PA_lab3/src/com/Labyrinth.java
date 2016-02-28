@@ -8,4 +8,5 @@ public interface Labyrinth {
     boolean isWallAt(int row,int column);
     int[] getStartCell();
     int[] getFinishCell();
+    boolean outOfBound(int row,int column);
 }

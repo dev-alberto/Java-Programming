@@ -36,4 +36,8 @@ public class LabyrinthListImpl implements Labyrinth {
     public int[] getFinishCell() {
         return new int[0];
     }
+    @Override
+    public boolean outOfBound(int row, int column) {
+        return false;
+    }
 }
