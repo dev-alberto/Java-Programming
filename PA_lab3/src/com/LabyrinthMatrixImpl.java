@@ -37,7 +37,7 @@ public class LabyrinthMatrixImpl implements Labyrinth {
 
     @Override
     public boolean isFreeAt(int row, int column) {
-        if(labyrinthMatrix[row][column]==0||labyrinthMatrix[row][column]==2)
+        if(labyrinthMatrix[row][column]==0)
             return true;
         else return false;
     }
