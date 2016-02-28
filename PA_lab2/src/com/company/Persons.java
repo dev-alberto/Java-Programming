@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.Scanner;
 
 public abstract class Persons {
-    private int ID;
-    private String firstName;
-    private String lastName;
+    protected int ID;
+    protected String firstName;
+    protected String lastName;
 
     public Persons() {}
 
@@ -35,4 +35,10 @@ public abstract class Persons {
     }
 
     public abstract boolean isFree();
+
+    // TODO: 28.02.2016 Read first name and last name
+    protected static void constructPerson(Persons person, Scanner scanner) {
+        person.setID(scanner.nextInt());
+    }
+
 }

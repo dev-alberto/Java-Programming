@@ -6,6 +6,7 @@ public class Project {
     private int ID;
     private Lecturer lecturer;
     private int capacity;
+    private int studentsAssigned;
 
     public int getID() {
         return ID;
@@ -49,5 +50,23 @@ public class Project {
                     ("There is not enough information in file where is stored the information about the projects");
         }
         return newPeoject;
+    }
+
+    public void assignProject(Student student) {
+        studentsAssigned++;
+        lecturer.addSupervisedStudent(student);
+    }
+
+    public boolean isOverSubscribed() {
+        return studentsAssigned > capacity;
+    }
+
+    public boolean isFull() {
+        return studentsAssigned == capacity;
+    }
+
+    public void breakAssignement(Student student) {
+        --studentsAssigned;
+        lecturer.breakAssignment(student);
     }
 }
