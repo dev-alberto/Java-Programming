@@ -12,11 +12,14 @@ public class Main {
         LabyrinthMatrixImpl labyrinthMatrix = new LabyrinthMatrixImpl("input.txt");
        // System.out.println(labyrinthMatrix);
         //System.out.println(labyrinthMatrix.isWallAt(0,3));
-        LabyrinthViewImpl labyrinthView=new LabyrinthViewImpl(labyrinthMatrix);
-        labyrinthView.constructLabyrinth();
-        LabyrinthSecondViewImpl labyrinthSecondView=new LabyrinthSecondViewImpl(labyrinthMatrix);
-        labyrinthSecondView.constructLabyrinth();
+        //LabyrinthViewImpl labyrinthView=new LabyrinthViewImpl(labyrinthMatrix);
+        //labyrinthView.constructLabyrinth();
+        //LabyrinthSecondViewImpl labyrinthSecondView=new LabyrinthSecondViewImpl(labyrinthMatrix);
+        //labyrinthSecondView.constructLabyrinth();
+        //System.out.println(labyrinthSecondView);
         //System.out.println(labyrinthView);
-        System.out.println(labyrinthSecondView);
+        LabyrinthSolveInteractive labyrinthSolveInteractive=new LabyrinthSolveInteractive();
+        labyrinthSolveInteractive.setLabyrinth(labyrinthMatrix);
+        labyrinthSolveInteractive.solve();
     }
 }

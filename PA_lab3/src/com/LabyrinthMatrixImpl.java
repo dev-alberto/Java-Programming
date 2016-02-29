@@ -85,6 +85,14 @@ public class LabyrinthMatrixImpl implements Labyrinth {
         return true;
         return false;
     }
+    public void setValue(int row,int column,int value)
+    {
+        labyrinthMatrix[row][column]=value;
+    }
+    public int getValue(int row,int column)
+    {
+        return labyrinthMatrix[row][column];
+    }
     public String toString(){
         return "Start cell" + Arrays.toString(getStartCell()) + "Finish cell" + Arrays.toString(getFinishCell());
     }

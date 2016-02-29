@@ -36,6 +36,17 @@ public class LabyrinthListImpl implements Labyrinth {
     public int[] getFinishCell() {
         return new int[0];
     }
+
+    @Override
+    public int getValue(int i, int j) {
+        return 0;
+    }
+
+    @Override
+    public void setValue(int i, int j, int value) {
+
+    }
+
     @Override
     public boolean outOfBound(int row, int column) {
         return false;

@@ -16,4 +16,6 @@ public class LabyrinthSolverAutomated implements LabyrinthSolver {
     public void nextCellToExplore(int row, int column) {
 
     }
+    @Override
+    public void solve(){}
 }
