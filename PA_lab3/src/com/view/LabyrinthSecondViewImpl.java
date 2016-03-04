@@ -1,6 +1,7 @@
 package com.view;
 
-import com.Labyrinth;
+import com.model.Labyrinth;
+import com.Pair;
 
 
 public class LabyrinthSecondViewImpl implements LabyrinthView {
@@ -27,16 +28,17 @@ public class LabyrinthSecondViewImpl implements LabyrinthView {
         for(int i=0;i<labyrinth.getColumnCount();i++){
             labView+="|";
             for(int j=0;j<labyrinth.getRowCount();j++){
-                if(labyrinth.isFreeAt(i,j)) {
+                Pair pair=new Pair(i,j);
+                if(labyrinth.isFreeAt(pair)) {
                     labView += "♥|";
                 }
-                else if(labyrinth.isWallAt(i,j)){
+                else if(labyrinth.isWallAt(pair)){
                     labView+="⚠|";
                 }
-                else if(labyrinth.getStartCell()[0]==i && labyrinth.getStartCell()[1]==j ){
+                else if(labyrinth.getStartCell().row==i && labyrinth.getStartCell().column==j ){
                     labView+="✌|";
                 }
-                else if(labyrinth.getFinishCell()[0]==i && labyrinth.getFinishCell()[1]==j){
+                else if(labyrinth.getFinishCell().row==i && labyrinth.getFinishCell().column==j){
                     labView+="♕|";
                 }
             }

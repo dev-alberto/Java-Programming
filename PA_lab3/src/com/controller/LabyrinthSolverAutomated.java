@@ -1,7 +1,12 @@
-package com;
+package com.controller;
 
+
+import com.model.Labyrinth;
+import com.Pair;
 
 public class LabyrinthSolverAutomated implements LabyrinthSolver {
+
+
     @Override
     public void setLabyrinth(Labyrinth labyrinth) {
 
@@ -13,9 +18,11 @@ public class LabyrinthSolverAutomated implements LabyrinthSolver {
     }
 
     @Override
-    public void nextCellToExplore(int row, int column) {
+    public void nextCellToExplore(Pair p) {
 
     }
     @Override
     public void solve(){}
+
+
 }

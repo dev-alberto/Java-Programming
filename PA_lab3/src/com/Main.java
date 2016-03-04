@@ -1,7 +1,10 @@
 package com;
 
 
-import com.view.LabyrinthSecondViewImpl;
+import com.controller.LabyrinthSolveInteractive;
+import com.model.Labyrinth;
+import com.model.LabyrinthMatrixImpl;
+import com.view.LabyrinthView;
 import com.view.LabyrinthViewImpl;
 
 import java.io.IOException;
@@ -9,17 +12,14 @@ import java.io.IOException;
 public class Main {
     public static void main(String [] args)  throws IOException
     {
-        LabyrinthMatrixImpl labyrinthMatrix = new LabyrinthMatrixImpl("input.txt");
-       // System.out.println(labyrinthMatrix);
-        //System.out.println(labyrinthMatrix.isWallAt(0,3));
-        //LabyrinthViewImpl labyrinthView=new LabyrinthViewImpl(labyrinthMatrix);
-        //labyrinthView.constructLabyrinth();
-        //LabyrinthSecondViewImpl labyrinthSecondView=new LabyrinthSecondViewImpl(labyrinthMatrix);
-        //labyrinthSecondView.constructLabyrinth();
-        //System.out.println(labyrinthSecondView);
-        //System.out.println(labyrinthView);
-        LabyrinthSolveInteractive labyrinthSolveInteractive=new LabyrinthSolveInteractive();
-        labyrinthSolveInteractive.setLabyrinth(labyrinthMatrix);
+       Labyrinth labyrinthMatrix = new LabyrinthMatrixImpl("input.txt");
+       LabyrinthView labyrinthView=new LabyrinthViewImpl(labyrinthMatrix);
+        LabyrinthSolveInteractive labyrinthSolveInteractive=new LabyrinthSolveInteractive(labyrinthMatrix,labyrinthView);
         labyrinthSolveInteractive.solve();
+
+        //Labyrinth labyrinth=new LabyrinthListImpl("input.txt");
+        //System.out.print(labyrinth+ " " + labyrinth.getFinishCell() + " " + labyrinth.getStartCell());
+        //Labyrinth labyrinth1=new LabyrinthMatrixImpl("input.txt");
+        //System.out.print("\n"+ labyrinth1.getFinishCell() + " " + labyrinth1.getStartCell());
     }
 }
