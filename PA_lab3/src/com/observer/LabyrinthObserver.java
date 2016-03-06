@@ -1,8 +1,11 @@
 package com.observer;
 
+import com.controller.LabyrinthSolver;
 import com.model.LabyrinthMatrixImpl;
 
+import java.util.Stack;
+
 public interface LabyrinthObserver {
-    void processCell(int i,int j);
+    public void notify(LabyrinthSolver labyrinthSolver);
     //String processSolution (LabyrinthMatrixImpl matrice);
 }

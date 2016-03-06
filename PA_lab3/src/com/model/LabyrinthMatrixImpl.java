@@ -6,27 +6,25 @@ import java.util.Arrays;
 
 public class LabyrinthMatrixImpl implements Labyrinth {
 
-    Pair pair=new Pair();
-    private int[][] labyrinthMatrix=new int[5][5];
-    public LabyrinthMatrixImpl(String filename) throws IOException
-    {
-        File file=new File(filename);
-     FileReader fileReader=new FileReader(file);
-        BufferedReader bufferedReader=new BufferedReader(fileReader);
+    Pair pair = new Pair();
+    private int[][] labyrinthMatrix = new int[50][50];
+    public LabyrinthMatrixImpl(String filename) throws IOException {
+        BufferedReader bufferedReader=new BufferedReader(new FileReader(new File(filename)));
         String line;
-        int i=0;
-        while ((line=bufferedReader.readLine())!=null)
+        int i = 0;
+        while ((line = bufferedReader.readLine()) != null)
         {
-            String[] strings=line.split(" ");
-            for(int j=0;j<strings.length;j++){
-                labyrinthMatrix[i][j]=Integer.parseInt(strings[j]);
-                pair.column=strings.length;
+            String[] strings = line.split(" ");
+            pair.column = strings.length;
+            for(int j = 0; j < strings.length; j++){
+                labyrinthMatrix[i][j] = Integer.parseInt(strings[j]);
             }
             i++;
         }
-        pair.row=i;
+        pair.row = i;
         bufferedReader.close();
     }
+
     @Override
     public int getRowCount() {
         return pair.row;
@@ -44,50 +42,40 @@ public class LabyrinthMatrixImpl implements Labyrinth {
 
     @Override
     public boolean isWallAt(Pair p) {
-       if(labyrinthMatrix[p.row][p.column]==1)
-           return true;
-        else return false;
+        return labyrinthMatrix[p.row][p.column] == 1;
+    }
+
+    private Pair getCellWithValue(int value) {
+        for(int i = 0; i < pair.row; i++) {
+            for (int j = 0; j < pair.column; j++) {
+                if(labyrinthMatrix[i][j] == value) {
+                    return new Pair(i, j);
+                }
+            }
+        }
+        return null;
     }
 
     @Override
     public Pair getStartCell() {
-        Pair aux=new Pair();
-        for(int i=0;i<pair.row;i++) {
-            for (int j = 0; j < pair.column; j++) {
-                if(labyrinthMatrix[i][j]==-1) {
-                    aux.row=i;
-                    aux.column = j;
-                    return aux;
-                }
-            }
-        }
-        return null;
+        return getCellWithValue(-1);
     }
 
     @Override
     public Pair getFinishCell() {
-        Pair aux=new Pair();
-        for(int i=0;i<pair.row;i++) {
-            for (int j = 0; j < pair.column; j++) {
-                if(labyrinthMatrix[i][j]==2) {
-                    aux.row=i;
-                    aux.column = j;
-                    return aux;
-                }
-            }
-        }
-        return null;
+        return getCellWithValue(2);
     }
 
     @Override
     public boolean outOfBound(Pair p){
-       return p.row<0||p.row>=pair.row ||p.column<0 ||p.column>=pair.column;
+       return p.row < 0 || p.row >= pair.row || p.column < 0 || p.column >= pair.column;
 
     }
-    public void setValue(Pair p,int value)
-    {
+
+    public void setValue(Pair p,int value) {
         labyrinthMatrix[p.row][p.column]=value;
     }
+
     public int getValue(Pair p)
     {
         return labyrinthMatrix[p.row][p.column];

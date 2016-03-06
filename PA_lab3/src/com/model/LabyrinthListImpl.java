@@ -8,42 +8,32 @@ import java.util.*;
 import java.util.List;
 
 public class LabyrinthListImpl implements Labyrinth {
-    List<Pair>occupiedCells=new ArrayList<>();
-    Pair pair=new Pair();
-    Pair start=new Pair();
-    Pair finish=new Pair();
-    public LabyrinthListImpl(String filename) throws IOException
-    {
-        File file=new File(filename);
-        FileReader fileReader=new FileReader(file);
-        BufferedReader bufferedReader=new BufferedReader(fileReader);
+    List<Pair> occupiedCells;
+    Pair pair;
+    Pair start;
+    Pair finish;
+    public LabyrinthListImpl(String filename) throws IOException {
+        pair=new Pair(0, 0);
+        start=new Pair(-1, -1);
+        finish=new Pair(-1, -1);
+        occupiedCells = new ArrayList<>();
+
+        BufferedReader bufferedReader=new BufferedReader(new FileReader(new File(filename)));
         String line;
-        int i=0;
-        int index=0;
-        while ((line=bufferedReader.readLine())!=null)
-        {
+
+        while ((line = bufferedReader.readLine()) != null) {
             String[] strings=line.split(" ");
-            for(int j=0;j<strings.length;j++){
+            for(int j = 0; j < strings.length; j++){
                 int number=Integer.parseInt(strings[j]);
-                pair.column=strings.length;
-                if(number==1) {
-                    Pair p = new Pair(i, j);
-                    //System.out.println("\n" + k + " " + i + " " + j + " " + p);
-                    occupiedCells.add(index,p);
-                    index++;
-                }
-                else if(number==-1){
-                    this.start.row=i;
-                    this.start.column=j;
-                }
-                else if(number==2){
-                    this.finish.row=i;
-                    this.finish.column=j;
+                switch (number) {
+                    case 1: occupiedCells.add(new Pair(pair.row, j)); break;
+                    case 2: finish = new Pair(pair.row, j); break;
+                    case -1: start = new Pair(pair.row, j); break;
                 }
             }
-            i++;
+            ++pair.row;
+            pair.column = strings.length;
         }
-        pair.row=i;
     }
 
     public String toString(){
@@ -62,22 +52,12 @@ public class LabyrinthListImpl implements Labyrinth {
 
     @Override
     public boolean isFreeAt(Pair p) {
-        for(Pair aux:occupiedCells){
-            if(aux.equals(p)){
-                return false;
-            }
-        }
-        return true;
+        return !occupiedCells.contains(p);
     }
 
     @Override
     public boolean isWallAt(Pair p) {
-        for(Pair aux:occupiedCells){
-            if(aux.equals(p)){
-                return true;
-            }
-        }
-        return false;
+        return occupiedCells.contains(p);
     }
 
     @Override
@@ -92,15 +72,33 @@ public class LabyrinthListImpl implements Labyrinth {
 
     @Override
     public void setValue(Pair p, int value) {
+        if (occupiedCells.contains(p)) {
+            occupiedCells.remove(p);
+        }
+
+        switch (value) {
+            case 1: occupiedCells.add(new Pair(pair.row, p.column));
+            case 2: finish = new Pair(pair.row, p.column);
+            case -1: start = new Pair(pair.row, p.column);
+        }
     }
 
     @Override
     public int getValue(Pair p) {
+        if (start.equals(p)) {
+            return -1;
+        }
+        if (finish.equals(p)) {
+            return 2;
+        }
+        if (occupiedCells.contains(p)) {
+            return 1;
+        }
         return 0;
     }
 
     @Override
     public boolean outOfBound(Pair p) {
-        return p.row<0||p.row>=getRowCount() ||p.column<0 ||p.column>=getColumnCount();
+        return p.row<0 || p.row >= getRowCount() || p.column < 0 || p.column >= getColumnCount();
     }
 }

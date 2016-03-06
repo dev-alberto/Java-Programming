@@ -1,50 +1,53 @@
 package com.view;
 
 
+import com.controller.LabyrinthSolveInteractive;
+import com.controller.LabyrinthSolver;
 import com.model.Labyrinth;
 import com.Pair;
+import com.sun.javafx.scene.control.skin.LabeledImpl;
 
 
 public class LabyrinthViewImpl implements LabyrinthView {
-    private Labyrinth labyrinth;
+    private LabyrinthSolver labyrinthSolver;
     private String labView="";
 
-    public LabyrinthViewImpl(Labyrinth labyrinth){
-        this.labyrinth=labyrinth;
+    public LabyrinthViewImpl(LabyrinthSolver labyrinthSolver){
+        this.labyrinthSolver=labyrinthSolver;
     }
+    public LabyrinthViewImpl() {}
 
 
     @Override
-    public void setLabyrinth(Labyrinth labyrinth) {
-        this.labyrinth=labyrinth;
+    public void setLabyrinth(LabyrinthSolver labyrinthSolver) {
+        this.labyrinthSolver=labyrinthSolver;
     }
 
     @Override
-    public Labyrinth getLabyrinth() {
-        return labyrinth;
+    public LabyrinthSolver getLabyrinth() {
+        return labyrinthSolver;
     }
 
-    public void constructLabyrinth()
-    {
+    public void constructLabyrinth() {
        // System.out.print("\n" + labyrinth.getFinishCell().row);
-        for(int i=0;i<labyrinth.getRowCount();i++){
+        for(int i=0;i < labyrinthSolver.getLabirinth().getRowCount();i++){
             labView+="|";
-            for(int j=0;j<labyrinth.getColumnCount();j++){
+            for(int j=0;j < labyrinthSolver.getLabirinth().getColumnCount();j++){
                 Pair p=new Pair(i,j);
-                if(labyrinth.isFreeAt(p)) {
-                    labView += " |";
-                }
-                else if(labyrinth.getValue(p)==7){
-                    labView+="X|";
-                }
-                else if(labyrinth.isWallAt(p)){
-                    labView+="*|";
-                }
-                else if(labyrinth.getStartCell().equals(p) ){
+                if(labyrinthSolver.getLabirinth().getStartCell().equals(p) ) {
                     labView+="S|";
                 }
-                else if(labyrinth.getFinishCell().equals(p)){
+                else if(labyrinthSolver.getLabirinth().getFinishCell().equals(p)) {
                     labView+="F|";
+                }
+                else if(labyrinthSolver.isVisited(p)) {
+                    labView+="X|";
+                }
+                else if(labyrinthSolver.getLabirinth().isFreeAt(p)) {
+                    labView += " |";
+                }
+                else if(labyrinthSolver.getLabirinth().isWallAt(p)) {
+                    labView += "*|";
                 }
             }
             labView+="\n";

@@ -8,9 +8,10 @@ public class Pair {
         this.row=0;
         this.column=0;
     }
-    public Pair(int row,int column){
-        this.row=row;
-        this.column=column;
+
+    public Pair(int row,int column) {
+        this.row = row;
+        this.column = column;
     }
     public boolean equals(Pair pair)
     {
@@ -19,5 +20,14 @@ public class Pair {
     }
     public String toString(){
         return (row + " " + column);
+    }
+
+    public void setValues(int row, int column) {
+        this.row = row;
+        this.column = column;
+    }
+
+    public Pair clone() {
+        return new Pair(row, column);
     }
 }

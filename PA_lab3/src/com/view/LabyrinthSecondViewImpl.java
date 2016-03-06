@@ -1,44 +1,47 @@
 package com.view;
 
+import com.controller.LabyrinthSolver;
 import com.model.Labyrinth;
 import com.Pair;
 
 
 public class LabyrinthSecondViewImpl implements LabyrinthView {
-    private Labyrinth labyrinth;
+    private LabyrinthSolver labyrinthSolver;
     private String labView="";
 
-    public LabyrinthSecondViewImpl(Labyrinth labyrinth){
-        this.labyrinth=labyrinth;
-    }
-
-
-    @Override
-    public void setLabyrinth(Labyrinth labyrinth) {
-        this.labyrinth=labyrinth;
+    public LabyrinthSecondViewImpl(LabyrinthSolver labyrinthSolver){
+        this.labyrinthSolver=labyrinthSolver;
     }
 
     @Override
-    public Labyrinth getLabyrinth() {
-        return labyrinth;
+    public void setLabyrinth(LabyrinthSolver labyrinthSolver) {
+        this.labyrinthSolver = labyrinthSolver;
+    }
+
+    @Override
+    public LabyrinthSolver getLabyrinth() {
+        return labyrinthSolver;
     }
 
     public void constructLabyrinth()
     {
-        for(int i=0;i<labyrinth.getColumnCount();i++){
+        for(int i=0;i<labyrinthSolver.getLabirinth().getColumnCount();i++){
             labView+="|";
-            for(int j=0;j<labyrinth.getRowCount();j++){
+            for(int j=0;j<labyrinthSolver.getLabirinth().getRowCount();j++){
                 Pair pair=new Pair(i,j);
-                if(labyrinth.isFreeAt(pair)) {
+                if(labyrinthSolver.getLabirinth().isFreeAt(pair) && !labyrinthSolver.isVisited(pair)) {
                     labView += "♥|";
                 }
-                else if(labyrinth.isWallAt(pair)){
+                else if (labyrinthSolver.isVisited(pair)){
+                    labView += "X|";
+                }
+                else if(labyrinthSolver.getLabirinth().isWallAt(pair)){
                     labView+="⚠|";
                 }
-                else if(labyrinth.getStartCell().row==i && labyrinth.getStartCell().column==j ){
+                else if(labyrinthSolver.getLabirinth().getStartCell().equals(pair)){
                     labView+="✌|";
                 }
-                else if(labyrinth.getFinishCell().row==i && labyrinth.getFinishCell().column==j){
+                else if(labyrinthSolver.getLabirinth().getFinishCell().equals(pair)){
                     labView+="♕|";
                 }
             }
