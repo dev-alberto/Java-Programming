@@ -1,20 +1,20 @@
 package com.company;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
-import java.util.*;
-
-public class Student extends Persons {
-    Project assignedProject;
-    LinkedList<Project> preferanceList;
+public class Student extends Person {
+    private List<Project> projectsPreferred;
+    private Project assignedProject;
 
     public Student() {
-        assignedProject = new Project();
-        preferanceList = new LinkedList<>();
+        projectsPreferred = new ArrayList<>();
+        assignedProject = null;
     }
 
-    public void assignProject(Project project) {
-        assignedProject = project;
-        project.assignProject(this);
+    public List<Project> getProjectsPreferred() {
+        return projectsPreferred;
     }
 
     public Project getAssignedProject() {
@@ -25,52 +25,43 @@ public class Student extends Persons {
         this.assignedProject = assignedProject;
     }
 
-    public LinkedList<Project> getPreferanceList() {
-        return preferanceList;
+    public List<Project> getProjectsPrefered() {
+        return projectsPreferred;
     }
 
-    public void setPreferanceList(LinkedList<Project> preferanceList) {
-        this.preferanceList = preferanceList;
+    public void setProjectsPreferred(List<Project> projectsPreferred) {
+        this.projectsPreferred = projectsPreferred;
     }
 
-    public void removePreferance(Project project) {
-        preferanceList.remove(project);
-    }
-
-    public void breakAssignement(Project project) {
-        assignedProject.breakAssignement(this);
-        assignedProject = null;
-    }
-
-    public boolean isProjectListEmpty() {
-        return preferanceList.isEmpty();
-    }
-
-    public Project getFirstProjectFromPreferanceList() {
-        return preferanceList.getLast();
-    }
-
-    void removeProject() {
-        assignedProject = null;
+    @Override
+    public void read(Scanner scanner, Problem problem) {
+        ID = scanner.nextInt();
+        int numberOfProjectsPreferred = scanner.nextInt();
+        for (int i = 0; i < numberOfProjectsPreferred; ++i) {
+            projectsPreferred.add(problem.getProject(scanner.nextInt()));
+        }
     }
 
     @Override
     public boolean isFree() {
-        return assignedProject != null;
+        return assignedProject == null;
     }
 
-    public void add(AbstractList<Project> projectList, int ID) {
-        preferanceList.addFirst(Utils.findProject(projectList, ID));
-    }
-
-    public static Student construct(final AbstractList<Project> project, Scanner scanner) {
-        Student newStudent = new Student();
-        Persons.constructPerson(newStudent, scanner);
-        int numberOfProjects = scanner.nextInt();
-        for (int i = 0; i < numberOfProjects; ++i) {
-            int ID = scanner.nextInt();
-            newStudent.add(project, ID);
+    @Override
+    public String toString() {
+        String text = "Student " + ID + " prefers projects ";
+        for (Project project : projectsPreferred) {
+            text = text + project.getID() + " ";
         }
-        return newStudent;
+        return text;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((Student)obj).getID() == ID;
+    }
+
+    public Project getMostPreferredProject() {
+        return projectsPreferred.get(0);
     }
 }

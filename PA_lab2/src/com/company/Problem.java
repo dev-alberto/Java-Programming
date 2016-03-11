@@ -1,161 +1,162 @@
 package com.company;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.SynchronousQueue;
 
 public class Problem {
-    private ArrayList<Project> projectsList;
-    private ArrayList<Student> studentsList;
-    private ArrayList<Lecturer> lecturerList;
-    private ArrayList<Student>[][] studentsSortedByLecturersPreferance;
+    List<Project>  projectsList;
+    List<Student> studentsList;
+    List<Lecturer> lecturersList;
 
-    public Problem(){
-        projectsList = new ArrayList<>();
-        studentsList = new ArrayList<>();
-        lecturerList = new ArrayList<>();
+    public Problem() {
+        projectsList = new ArrayList<Project>();
+        studentsList = new ArrayList<Student>();
+        lecturersList = new ArrayList<Lecturer>();
     }
 
-    private Scanner getScanner(String filePath) {
-        Scanner file = null;
+    private void readProjectsList() throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File("E:\\facultate\\anul II\\materialele mele\\semestrul 2\\PA\\Tema2Refacuta\\src\\com\\company\\projects.txt"));
+        int numberOfProjects = scanner.nextInt();
+        for (int i = 0; i < numberOfProjects; ++i) {
+            Project tempProject = new Project();
+            tempProject.readProject(scanner);
+            projectsList.add(tempProject);
+        }
+    }
+
+    private void readStudentsList() throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File("E:\\facultate\\anul II\\materialele mele\\semestrul 2\\PA\\Tema2Refacuta\\src\\com\\company\\students.txt"));
+        int numberOfStudents = scanner.nextInt();
+        for (int i = 0; i < numberOfStudents; ++i) {
+            Student tempStudent = new Student();
+            tempStudent.read(scanner, this);
+            studentsList.add(tempStudent);
+        }
+    }
+
+    private void readLecturerList() throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File("E:\\facultate\\anul II\\materialele mele\\semestrul 2\\PA\\Tema2Refacuta\\src\\com\\company\\lecturers.txt"));
+        int numberOfLecturers = scanner.nextInt();
+        for (int i = 0; i < numberOfLecturers; ++i) {
+            Lecturer tempLecturer = new Lecturer();
+            tempLecturer.read(scanner, this);
+            lecturersList.add(tempLecturer);
+        }
+    }
+
+    public void readInstance() {
         try {
-            file = new Scanner(new File(filePath));
+            readProjectsList();
+            readStudentsList();
+            readLecturerList();
         }
-        catch (Exception exeptionOpeningFile) {
-            System.out.println(exeptionOpeningFile.getMessage());
+        catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        return file;
     }
 
-    // TODO: 27.02.2016 ID-uri unice
-    private void readProjectsList(String projectsFile) {
-        Scanner scanner = getScanner(projectsFile);
-        if (scanner != null) {
-            if (scanner.hasNext()) {
-                System.err.println("There is not enough information in file  " + projectsFile);
-            } else {
-                int numberOfProjects = scanner.nextInt();
-                for (int i = 0; i < numberOfProjects; ++i) {
-                    projectsList.add(Project.construct(scanner));
-                }
+    private void writeProjects() {
+        for (Project project:projectsList) {
+            System.out.println(project.toString());
+        }
+    }
+
+    private void writeStudents() {
+        for (Student students : studentsList) {
+            System.out.println(students.toString());
+        }
+    }
+
+    private void writeLecturer() {
+        for (Lecturer lecturer : lecturersList) {
+            System.out.println(lecturer.toString());
+        }
+    }
+
+    public void writeInstance() {
+        writeProjects();
+        writeStudents();
+        writeLecturer();
+    }
+
+    public Project getProject(int ID) {
+        for (Project project : projectsList) {
+            if (project.getID() == ID) {
+                return project;
             }
         }
+        return null;
     }
 
-    // TODO: 27.02.2016 ID-uri unice
-    private void readStudentList(TypeOfPerson typeOfPerson, String file, ArrayList<Student> studentsList) {
-        Scanner scanner = getScanner(file);
-        if (scanner != null) {
-            if (scanner.hasNext()) {
-                System.err.println("There is not enough information in file  " + file);
-            } else {
-                int numberOfStudents = scanner.nextInt();
-                for (int i = 0; i < numberOfStudents; ++i) {
-                    studentsList.add(Student.construct(projectsList, scanner));
-                }
-            }
-        }
-    }
-
-    // TODO: 27.02.2016 ID-uri unice
-    private void readLecturerList(TypeOfPerson typeOfPerson, String file, ArrayList<Lecturer> lecturerList) {
-        Scanner scanner = getScanner(file);
-        if (scanner != null) {
-            if (scanner.hasNext()) {
-                System.err.println("There is not enough information in file  " + file);
-            } else {
-                int numberOfLecurer = scanner.nextInt();
-                for (int i = 0; i < numberOfLecurer; ++i) {
-                    lecturerList.add(Lecturer.construct(studentsList, projectsList, scanner));
-                }
-            }
-        }
-    }
-
-    private void computeStudentsSortedByLecturersPreferrance() {
-        for (int i = 0; i < lecturerList.size(); ++i) {
-            for (int j = 0; j <projectsList.size(); ++j) {
-                studentsSortedByLecturersPreferance[i][j] = new ArrayList();
-            }
-        }
-
-        for (int i = 0; i < lecturerList.size(); ++i) {
-            for (int j = 0; j <studentsList.size(); ++j) {
-                for (Project project : lecturerList.get(i).getMyProjects()) {
-                    if (studentsList.get(j).getPreferanceList().contains(project)) {
-                        studentsSortedByLecturersPreferance[i][j].add(studentsList.get(j));
-                    }
-                }
-            }
-        }
-    }
-
-    public void readProblemInstance(String projectsFile, String studentsFile, String lecturerFile) {
-        readProjectsList(projectsFile);
-        readStudentList(TypeOfPerson.student, studentsFile, studentsList);
-        readLecturerList(TypeOfPerson.lecturer, lecturerFile, lecturerList);
-
-        studentsSortedByLecturersPreferance = new ArrayList<>[lecturerList.size()][projectsList.size()];
-        computeStudentsSortedByLecturersPreferrance();
-    }
-
-    private Student getThatNeedsAProject() {
+    public Student getStudent(int ID) {
         for (Student student : studentsList) {
-            if (student.isFree() && !student.isProjectListEmpty()) {
+            if (student.getID() == ID) {
                 return student;
             }
         }
         return null;
     }
 
-    private void delete(ArrayList<Student> studentsList, Project project, Lecturer lecturer) {
-        if (studentsList.get(0).getPreferanceList().contains(project) && lecturer.getMyProjects().contains(project)) {
-            studentsList.get(0).removePreferance(project);
-            studentsList.remove(0);
-        }
-    }
-
-    public void findStableMatching() {
-        for (Student newStudent = getThatNeedsAProject(); newStudent !=null; newStudent = getThatNeedsAProject()) {
-            Project firstProject = newStudent.getFirstProjectFromPreferanceList();
-            Lecturer lecturer = firstProject.getLecturer();
-            newStudent.assignProject(firstProject);
-
-            if (firstProject.isOverSubscribed()) {
-                Student worstStudent = studentsSortedByLecturersPreferance
-                        [lecturerList.indexOf(lecturer)][projectsList.indexOf(firstProject)].get(0);
-                worstStudent.breakAssignement(firstProject);
-            }
-            else if (lecturer.isOverSubscribed()) {
-                Student worstStudent = lecturer.getLeastPreferredStudentAssignedToAProject();
-                Project projectAssignedToWorstStudent = worstStudent.getAssignedProject();
-                worstStudent.breakAssignement(projectAssignedToWorstStudent);
-            }
-
-            if (firstProject.isFull()) {
-                Student worstStudent = lecturer.getLeastPreferredStudentAssignedToProiect(firstProject);
-                while (!studentsSortedByLecturersPreferance[lecturerList.indexOf(lecturer)][projectsList.indexOf(firstProject)]
-                        .get(0).equals(worstStudent)) {
-                    delete(studentsSortedByLecturersPreferance[lecturerList.indexOf(lecturer)][projectsList.indexOf(firstProject)],
-                            firstProject, lecturer);
-                }
-            }
-            if (lecturer.isFull()) {
-                Student worstStudent = lecturer.getLeastPreferredStudentAssignedToAProject();
-                while (!lecturer.getPreferredStudents().get(0).equals(worstStudent)){
-                    for (Project project : projectsList) {
-                        delete(studentsSortedByLecturersPreferance[lecturerList.indexOf(lecturer)][projectsList.indexOf(project)],
-                                project, lecturer);
-                    }
-                }
-
-            }
-        }
-    }
-
-    public void printSolution() {
+    private Student getStudentsWithoutProjectAssigned() {
         for (Student student : studentsList) {
-            System.out.println(student.getID() + " " + student.getAssignedProject().getID());
+            if (student.isFree() && !student.getProjectsPrefered().isEmpty()) {
+                return student;
+            }
+        }
+        return null;
+    }
+
+    private void assign(Student student, Project project) {
+        student.setAssignedProject(project);
+        project.assignStudent(student);
+    }
+
+    private void breakAgreement(Student student, Project project) {
+        student.setAssignedProject(null);
+        project.getStudentsAssigned().remove(student);
+        project.getLecturer().getAssignedStudents().remove(student);
+    }
+
+    public void computeStableMatching() {
+        Student student;
+        do{
+            student = getStudentsWithoutProjectAssigned();
+            if (student != null) {
+                Project project = student.getMostPreferredProject();
+                Lecturer lecturer = project.getLecturer();
+                assign(student, project);
+
+                if (project.isOverSubscribed()) {
+                    Student worstStudent = project.worstStudentAssigned();
+                    breakAgreement(worstStudent, project);
+                }
+                else if (lecturer.isOverSubscribed()) {
+                    Student worstStudent = lecturer.worstStudentAssigned();
+                    Project worstsStudentProject = worstStudent.getAssignedProject();
+                    breakAgreement(worstStudent, worstsStudentProject);
+                }
+                if (project.isFull()) {
+                    Student worstStudent = project.worstStudentAssigned();
+                    project.cleanLists(worstStudent);
+                }
+                if (lecturer.isFull()) {
+                    Student worstStudent = lecturer.worstStudentAssigned();
+                    lecturer.cleanLists(worstStudent);
+                }
+            }
+        }while (student != null);
+    }
+
+    public void writeSolution() {
+        for (Student student : studentsList) {
+            if (student.getAssignedProject() != null) {
+                System.out.println("The Student S" + student.getID() + " was assigned to the project P" + student.getAssignedProject().getID());
+            }
         }
     }
 }
