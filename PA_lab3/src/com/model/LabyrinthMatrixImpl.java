@@ -8,6 +8,13 @@ public class LabyrinthMatrixImpl implements Labyrinth {
 
     Pair pair = new Pair();
     private int[][] labyrinthMatrix = new int[50][50];
+
+    /**
+     * Constructor that instantiates a labyrinth represented in matrix form
+     * @param filename string or path for the file containing labyrinth matrix
+     * @throws IOException
+     */
+
     public LabyrinthMatrixImpl(String filename) throws IOException {
         BufferedReader bufferedReader=new BufferedReader(new FileReader(new File(filename)));
         String line;
@@ -45,6 +52,11 @@ public class LabyrinthMatrixImpl implements Labyrinth {
         return labyrinthMatrix[p.row][p.column] == 1;
     }
 
+    /**
+     * Returns the Pair that has the value given as a parameter
+     * @param value int we want to check
+     * @return Pair with specified value
+     */
     private Pair getCellWithValue(int value) {
         for(int i = 0; i < pair.row; i++) {
             for (int j = 0; j < pair.column; j++) {
@@ -56,10 +68,12 @@ public class LabyrinthMatrixImpl implements Labyrinth {
         return null;
     }
 
+
     @Override
     public Pair getStartCell() {
         return getCellWithValue(-1);
     }
+
 
     @Override
     public Pair getFinishCell() {
@@ -71,6 +85,7 @@ public class LabyrinthMatrixImpl implements Labyrinth {
        return p.row < 0 || p.row >= pair.row || p.column < 0 || p.column >= pair.column;
 
     }
+
 
     public void setValue(Pair p,int value) {
         labyrinthMatrix[p.row][p.column]=value;

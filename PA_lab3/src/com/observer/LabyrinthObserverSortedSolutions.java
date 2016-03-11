@@ -6,14 +6,20 @@ import com.controller.LabyrinthSolver;
 import java.util.*;
 
 
-/**
- * Created by alber_000 on 3/6/2016.
- */
 
 public class LabyrinthObserverSortedSolutions implements LabyrinthObserver {
+    LabyrinthSolver labyrinthSolver;
+
+    public LabyrinthObserverSortedSolutions(LabyrinthSolver labyrinthSolver) {
+        this.labyrinthSolver = labyrinthSolver;
+    }
+
+    /**
+     * Uses a TreeSet to store and display all solutions sorted by length
+     */
     SortedSet<String> solutions=new TreeSet<>(new MyComp());
     @Override
-    public void notify(LabyrinthSolver labyrinthSolver) {
+    public void notifyChange() {
       solutions.add(labyrinthSolver.getStringMoves());
         System.out.println("\n " + "Solutions in sorted order are: ");
         System.out.print(solutions + "\n");

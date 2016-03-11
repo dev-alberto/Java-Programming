@@ -12,6 +12,11 @@ public class LabyrinthListImpl implements Labyrinth {
     Pair pair;
     Pair start;
     Pair finish;
+    /**
+     * Constructor that instantiates a labyrinth represented in list form
+     * @param filename string or path for the file containing the labyrinth
+     * @throws IOException
+     */
     public LabyrinthListImpl(String filename) throws IOException {
         pair=new Pair(0, 0);
         start=new Pair(-1, -1);
@@ -52,12 +57,19 @@ public class LabyrinthListImpl implements Labyrinth {
 
     @Override
     public boolean isFreeAt(Pair p) {
-        return !occupiedCells.contains(p);
+        for (Pair aux : occupiedCells) {
+            if (aux.equals(p)) {
+                return false;
+            }
+        }
+        return true;
+        //return !occupiedCells.contains(p);
     }
 
     @Override
     public boolean isWallAt(Pair p) {
-        return occupiedCells.contains(p);
+        return !isFreeAt(p);
+        //return occupiedCells.contains(p);
     }
 
     @Override

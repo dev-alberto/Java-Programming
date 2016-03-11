@@ -4,8 +4,6 @@ package com.controller;
 import com.model.Labyrinth;
 import com.Pair;
 import com.observer.LabyrinthObserver;
-import com.view.LabyrinthView;
-import javafx.collections.transformation.SortedList;
 
 import java.util.*;
 
@@ -18,6 +16,10 @@ public class LabyrinthSolverAutomated implements LabyrinthSolver {
     private List<String> moves;
     List<LabyrinthObserver> observersList;
 
+    /**
+     * Automated Solver constructor. Takes a labyrinth as a parameter and initialises start, finish,currentPosition, visitedCells.
+     * @param labyrinth
+     */
     public LabyrinthSolverAutomated(Labyrinth labyrinth) {
         this.labyrinth = labyrinth;
         start = labyrinth.getStartCell();
@@ -111,7 +113,7 @@ public class LabyrinthSolverAutomated implements LabyrinthSolver {
 
     public void notifyObservers() {
         for (LabyrinthObserver labyrinthObsever : observersList) {
-            labyrinthObsever.notify(this);
+            labyrinthObsever.notifyChange();
         }
     }
 

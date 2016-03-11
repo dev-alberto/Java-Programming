@@ -20,6 +20,11 @@ public class LabyrinthSolveInteractive implements LabyrinthSolver {
     private List<String> moves;
     private List<LabyrinthObserver> observersList;
 
+    /**
+     * Interactive Solver constructor. Takes a labyrinth as a parameter and initialises start, finish,currentPosition.
+     * @param labyrinth object
+     */
+
     public LabyrinthSolveInteractive(Labyrinth labyrinth) {
         this.labyrinth = labyrinth;
         this.start = labyrinth.getStartCell();
@@ -64,6 +69,7 @@ public class LabyrinthSolveInteractive implements LabyrinthSolver {
 
         if(labyrinth.getValue(position)==2) {
             notifyObservers();
+            currentPosition = position.clone();
             System.out.println("You have escaped the bloody maze ");
             return true;
         }
@@ -100,7 +106,12 @@ public class LabyrinthSolveInteractive implements LabyrinthSolver {
                     if (nextCellToExplore(aux)) {
                         moves.add(move);
                     }
-                    System.out.println("Current position is " + currentPosition);
+                    if (!winner(currentPosition)) {
+                        System.out.println("Current position is " + currentPosition);
+                    }
+                    else {
+                        break;
+                    }
                 }
             }
             else {
@@ -115,13 +126,13 @@ public class LabyrinthSolveInteractive implements LabyrinthSolver {
     }
 
     public boolean winner(Pair p){
-        return labyrinth.getValue(p)==2;
+        return labyrinth.getValue(p) == 2;
     }
 
     @Override
     public void notifyObservers() {
         for (LabyrinthObserver labyrinthObsever : observersList) {
-            labyrinthObsever.notify(this);
+            labyrinthObsever.notifyChange();
         }
     }
 
