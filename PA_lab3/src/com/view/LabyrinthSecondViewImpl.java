@@ -29,20 +29,20 @@ public class LabyrinthSecondViewImpl implements LabyrinthView {
             labView+="|";
             for(int j=0;j<labyrinthSolver.getLabirinth().getRowCount();j++){
                 Pair pair=new Pair(i,j);
-                if(labyrinthSolver.getLabirinth().isFreeAt(pair) && !labyrinthSolver.isVisited(pair)) {
+                if(labyrinthSolver.getLabirinth().getStartCell().equals(pair)){
+                    labView+="✌|";
+                }
+                else if(labyrinthSolver.getLabirinth().getFinishCell().equals(pair)){
+                    labView+="♕|";
+                }
+                else if(labyrinthSolver.getLabirinth().isFreeAt(pair) && !labyrinthSolver.isVisited(pair)) {
                     labView += "♥|";
                 }
                 else if (labyrinthSolver.isVisited(pair)){
                     labView += "X|";
                 }
-                else if(labyrinthSolver.getLabirinth().isWallAt(pair)){
-                    labView+="⚠|";
-                }
-                else if(labyrinthSolver.getLabirinth().getStartCell().equals(pair)){
-                    labView+="✌|";
-                }
-                else if(labyrinthSolver.getLabirinth().getFinishCell().equals(pair)){
-                    labView+="♕|";
+                else if(labyrinthSolver.getLabirinth().isWallAt(pair)) {
+                    labView += "⚠|";
                 }
             }
             labView+="\n";

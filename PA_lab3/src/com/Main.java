@@ -17,31 +17,30 @@ import com.view.LabyrinthView;
 import com.view.LabyrinthViewImpl;
 
 import java.io.IOException;
+import java.io.SyncFailedException;
 
 public class Main {
     public static void main(String [] args)  throws IOException
     {
-        Labyrinth labyrinth= LabyrinthFactory.buildLabyrinth(LabyrinthType.MATRIX);
+
+        Labyrinth labyrinth= LabyrinthFactory.buildLabyrinth(LabyrinthType.LIST);
+        Labyrinth labyrinth1=LabyrinthFactory.buildLabyrinth(LabyrinthType.MATRIX);
+        /*
        // Labyrinth labyrinth=new LabyrinthMatrixImpl("input.txt");
         LabyrinthSolver labyrinthSolver=new LabyrinthSolverAutomated(labyrinth);
-        labyrinthSolver.registerObserver(new LabirynthObserverImpl());
-        labyrinthSolver.registerObserver(new LabirynthObserverSecondImpl());
-        labyrinthSolver.registerObserver(new LabirynthObserverThirdImpl());
-        labyrinthSolver.registerObserver(new LabyrinthObserverSortedSolutions());
+        labyrinthSolver.registerObserver(new LabirynthObserverImpl(labyrinthSolver));
+        labyrinthSolver.registerObserver(new LabirynthObserverSecondImpl(labyrinthSolver));
+        labyrinthSolver.registerObserver(new LabirynthObserverThirdImpl(labyrinthSolver));
+        labyrinthSolver.registerObserver(new LabyrinthObserverSortedSolutions(labyrinthSolver));
         labyrinthSolver.solve();
-
-        /*
-        Labyrinth labyrinthMatrix = new LabyrinthMatrixImpl("input.txt");
-        LabyrinthSolver labyrinthSolveInteractive = new LabyrinthSolveInteractive(labyrinthMatrix);
-        labyrinthSolveInteractive.registerObserver(new LabirynthObserverImpl());
-        labyrinthSolveInteractive.registerObserver(new LabirynthObserverSecondImpl());
-        labyrinthSolveInteractive.registerObserver(new LabirynthObserverThirdImpl());
-        labyrinthSolveInteractive.solve();
         */
 
-        //Labyrinth labyrinth=new LabyrinthListImpl("input.txt");
-        //System.out.print(labyrinth+ " " + labyrinth.getFinishCell() + " " + labyrinth.getStartCell());
-        //Labyrinth labyrinth1=new LabyrinthMatrixImpl("input.txt");
-        //System.out.print("\n"+ labyrinth1.getFinishCell() + " " + labyrinth1.getStartCell());
+        LabyrinthSolver labyrinthSolver1=new LabyrinthSolveInteractive(labyrinth1);
+        labyrinthSolver1.registerObserver(new LabirynthObserverImpl(labyrinthSolver1));
+        labyrinthSolver1.registerObserver(new LabirynthObserverImpl(labyrinthSolver1));
+        labyrinthSolver1.registerObserver(new LabirynthObserverSecondImpl(labyrinthSolver1));
+        labyrinthSolver1.registerObserver(new LabirynthObserverThirdImpl(labyrinthSolver1));
+        labyrinthSolver1.solve();
+
     }
 }

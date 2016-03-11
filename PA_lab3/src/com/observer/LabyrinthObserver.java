@@ -6,6 +6,9 @@ import com.model.LabyrinthMatrixImpl;
 import java.util.Stack;
 
 public interface LabyrinthObserver {
-    public void notify(LabyrinthSolver labyrinthSolver);
+    /**
+     * Method that takes an instance of the constroller and has different roles depending of the implementatio
+     */
+    void notifyChange();
     //String processSolution (LabyrinthMatrixImpl matrice);
 }
