@@ -1,14 +1,13 @@
 package commands;
 
 import utils.PathManager;
-
-import javax.activation.CommandInfo;
+import Exception.*;
 
 /**
- * Created by Diana on 13.03.2016.
+ * Factory design pattern. Class used to create different type of object, depending on the user's input.
  */
 public class CommandFactory {
-    public Command create(PathManager pathManager, String[] commandArguments) {
+    public Command create(PathManager pathManager, String[] commandArguments) throws MyException {
         if (commandArguments[0].equals("cd")) {
             return new CommandCD(pathManager);
         }
@@ -30,8 +29,9 @@ public class CommandFactory {
         if (commandArguments[0].equals("report")) {
             return new CommandReport(pathManager);
         }
-        
-        return null;
-        // TODO: 13.03.2016 In loc sa returnezi null arunci exceptia comanda necunoscuta sau ceva de genul
+        if(commandArguments[0].equals("find")){
+            return new CommandFind(pathManager);
+        }
+        throw new MyException("command not found,please try again");
     }
 }

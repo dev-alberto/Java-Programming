@@ -1,12 +1,18 @@
 package commands;
 
-import org.apache.commons.io.FilenameUtils;
+
 import utils.PathManager;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import Exception.*;
 
 /**
- * Created by Diana on 13.03.2016.
+ *  Class used for implementing the list functionality which lists all audio files in a directory
  */
 public class CommandList implements Command {
     private PathManager pathManager;
@@ -15,6 +21,7 @@ public class CommandList implements Command {
         this.pathManager = pathManager;
     }
 
+/*
     // TODO: 13.03.2016 de pus la list si cu director dat ca parametru
     public void execute(String[] commandArguments) {
         File[] paths;
@@ -27,4 +34,26 @@ public class CommandList implements Command {
             }
         }
     }
+    */
+
+    /**
+     * Method that lists all audio files in a directory.
+     * @param commandArguments user input
+     * @throws MyException
+     */
+
+    public void execute(String[] commandArguments) throws MyException {
+        Path directory= FileSystems.getDefault().getPath(pathManager.getPath());
+        try {
+            Files.list(directory)
+                    .filter(path -> path.getFileName().toString().matches("[^\\.]*\\.(WAV|MP3|VOX|RAW|WMA|wav|mp3|vox|row|wma)"))
+                    .forEach(System.out::println);
+        } catch (UncheckedIOException e){
+            throw  new MyException("You don't have permission to search this directory, please try again\n",e);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 }

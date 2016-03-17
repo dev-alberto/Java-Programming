@@ -1,4 +1,5 @@
 package commands;
+import Exception.*;
 
 import utils.FavouriteSong;
 import utils.PathManager;
@@ -7,8 +8,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * Created by Diana on 13.03.2016.
+ * Class used for implementing the fav command, which serializes a list of favorite songs and also provides functionality for deserialization.
  */
 public class CommandFav implements Command {
     protected final PathManager pathManager;
@@ -16,6 +18,11 @@ public class CommandFav implements Command {
     public CommandFav(PathManager pathManager) {
         this.pathManager = pathManager;
     }
+
+    /**
+     * Method which provided the deserialization functionality
+     * @return list of favorite songs
+     */
 
     protected List<FavouriteSong> deserialize() {
         ObjectInputStream in = null;
@@ -25,15 +32,21 @@ public class CommandFav implements Command {
             List<FavouriteSong> favouriteSongs = (ArrayList<FavouriteSong>) in.readObject();
             return favouriteSongs;
         } catch (IOException e) {
-            System.out.println("An error have occurred and we can't work with preferences.");
-        }
-        catch (ClassNotFoundException e) {
-            e.printStackTrace();
+           e.printStackTrace();
+        }catch (ClassNotFoundException e){
+            System.out.print(e.getCause()+ e.getMessage());
         }
         return new ArrayList<FavouriteSong>();
     }
 
-    private void addFavorites(File file, String mark){
+    /**
+     * Method used to serialize songs in a file
+     * @param file which will contain the serialised songs
+     * @param mark string
+     * @throws MyException
+     */
+
+    private void addFavorites(File file, String mark) throws MyException{
         List<FavouriteSong> favouriteSongs = deserialize();
         if (favouriteSongs != null) {
             favouriteSongs.add(new FavouriteSong(file, mark));
@@ -44,15 +57,26 @@ public class CommandFav implements Command {
                 out.close();
             } catch (IOException e) {
                 // TODO: 13.03.2016 adauga exceptie nu a putut fi adaugat la lista de favorite
-                e.printStackTrace();
+                throw new MyException("Ooops, I was not able to add this to list of favorites.",e);
             }
         }
     }
 
+    /**
+     * method that performs the add songs to list of favorites
+     * @param commandArguments i.e user input
+     */
+
     public void execute(String[] commandArguments) {
         File file = pathManager.getFilePath(commandArguments[1]);
         if (file != null && PathManager.isAudio(file)) {
-            addFavorites(file, commandArguments[2]);
+            try {
+
+
+                addFavorites(file, commandArguments[2]);
+            }catch (MyException myexception){
+                System.out.print(myexception.getMessage() + " " + myexception.getCause());
+            }
         }
         else {
             System.out.println("Path is not valid or file is not audio.");

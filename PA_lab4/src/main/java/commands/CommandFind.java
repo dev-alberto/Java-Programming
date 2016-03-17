@@ -1,30 +1,39 @@
 package commands;
-
+import Exception.*;
 import utils.PathManager;
 
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.io.UncheckedIOException;
+import java.nio.file.*;
 import java.util.regex.Pattern;
 
 /**
- * Created by alber_000 on 3/14/2016.
+ * Class used for implementing the find functionality which lists all audio files in a directory and its subdirectories
  */
 public class CommandFind implements Command  {
     private PathManager pathManager;
     public CommandFind(PathManager pathManager){this.pathManager=pathManager;}
 
-    public void execute(String[] commandArguments)  {
+    /**
+     * Method that takes a path and returns all audio files in the directory tree. Files.walk() returns a lazy Stream of all descend files.
+     * We filter the results using a regular expression
+     * @param commandArguments user input
+     * @throws MyException
+     */
+
+    public void execute(String[] commandArguments) throws MyException {
         Path start = FileSystems.getDefault().getPath(pathManager.getPath());
         Pattern pattern = Pattern.compile("[^\\.]*\\.(WAV|MP3|VOX|RAW|WMA|wav|mp3|vox|row|wma)");
+
         try {
             Files.walk(start)
                     .filter(path -> path.toFile().isFile())
-                    .filter(path -> path.toString().matches(pattern)) //ToDO write regex
-                    .forEach(System.out.println("lalala"));
-        }catch (IOException e){
+                    .filter(path -> path.toString().matches(pattern.toString()))
+                    .forEach(System.out::println);
+        }catch (UncheckedIOException e){
+            throw  new MyException("You don't have permission to search this directory tree, please try again\n",e);
+        }
+        catch (IOException e){
             e.printStackTrace();
         }
     }

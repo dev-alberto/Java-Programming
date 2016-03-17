@@ -2,10 +2,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
 /**
- * Created by Diana on 12.03.2016.
+ * Main class, used to run the application.
  */
 public class Main {
-    public static void main(String argv[]) throws IOException, UnsupportedAudioFileException {
+    public static void main(String argv[]) {
         MyAudioLibraryManager myAudioLibraryManager = new MyAudioLibraryManager();
             myAudioLibraryManager.execute();
     }

@@ -5,9 +5,10 @@ import utils.PathManager;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import Exception.*;
 
 /**
- * Created by Diana on 13.03.2016.
+ * Class used to implement the play functionality, which takes a path and plays the song.
  */
 public class CommandPlay implements Command {
     private PathManager pathManager;
@@ -15,11 +16,16 @@ public class CommandPlay implements Command {
         this.pathManager = pathManager;
     }
 
-    public void execute(String[] commandArguments) {
+    /**
+     * Method that plays the audio file
+     * @param commandArguments user input
+     * @throws MyException
+     */
+    public void execute(String[] commandArguments) throws MyException {
         try {
             File file = pathManager.getFilePath(commandArguments[1]);
             if (file != null && PathManager.isAudio(file)) {
-                Desktop desktop = Desktop.getDesktop(); // TODO: 13.03.2016 vezi daca astea nu arunca cumva exceptii
+                Desktop desktop = Desktop.getDesktop(); // TODO: 13.03.2016 vezi daca astea nu arunca cumva exceptii ---> vezi headlessexception
                 desktop.open(file);
                 System.out.println(file.toString());
             }
@@ -27,10 +33,15 @@ public class CommandPlay implements Command {
                 System.out.println("Path is not valid or file is not audio.");
             }
         }catch (IOException ioException) {
-            System.out.println("This file is not in current directory");
+            throw new MyException("This file is not in current directory",ioException);
         }
         catch (IndexOutOfBoundsException indexOutOfBandsExeption){
             // TODO: 13.03.2016 arunca exceptie cu nr de argumente gresit
+
+            throw new MyException("Wrong number of arguments",indexOutOfBandsExeption);
+        }
+        catch (HeadlessException headless){
+            headless.printStackTrace();
         }
     }
 }

@@ -10,14 +10,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import Exception.*;
 
 /**
- * Created by Diana on 13.03.2016.
+ *
  */
 public class CommandReport extends CommandFav {
     public CommandReport(PathManager pathManager) {
         super(pathManager);
     }
+
+    /**
+     *
+     * @param commandArguments i.e user input
+     */
 
     public void execute(String[] commandArguments) {
         //Create blank workbook
@@ -47,7 +53,7 @@ public class CommandReport extends CommandFav {
         }
         catch (IOException ioExeption) {
             // TODO: 13.03.2016 Ceva exceptie iar
-            System.out.println("Nu a putut fi creat raportul");
+            System.out.println("Nu a putut fi creat raportul " + ioExeption.getCause());
         }
     }
 }
