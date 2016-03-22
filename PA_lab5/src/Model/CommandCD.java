@@ -1,0 +1,24 @@
+package Model;
+import Model.Exception.*;
+import Model.utils.PathManager;
+
+/**
+ * Created by alber_000 on 3/21/2016.
+ */
+
+public class CommandCD implements Command {
+    PathManager pathManager;
+    public CommandCD(PathManager pathManager) {
+        this.pathManager = pathManager;
+    }
+
+    public void execute(String[] commandArguments) throws MyException  {
+        try {
+            pathManager.setFile(pathManager.changePath(commandArguments[1]));
+        }
+        catch (IndexOutOfBoundsException exception){
+            // TODO: 13.03.2016 Arunca exceptie de a noastra in care zici ca ai prea putine argumente!
+            throw new MyException("Too few arguments",exception);
+        }
+    }
+}
