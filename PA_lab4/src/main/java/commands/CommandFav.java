@@ -1,4 +1,3 @@
-<<<<<<< 65e416ee5d382d004dea1ceae70ab86e4b0af3b6
 package commands;
 import Exception.*;
 
@@ -15,6 +14,7 @@ import java.util.List;
  */
 public class CommandFav implements Command {
     protected final PathManager pathManager;
+    protected static final String serializedListOfSongs = "serializedListOfSongs.txt";
 
     public CommandFav(PathManager pathManager) {
         this.pathManager = pathManager;
@@ -25,10 +25,10 @@ public class CommandFav implements Command {
      * @return list of favorite songs
      */
 
-    protected List<FavouriteSong> deserialize() {
+    protected List<FavouriteSong> deserialize(File fileName) {
         ObjectInputStream in = null;
         try {
-            FileInputStream la = new FileInputStream("serializedListOfSongs.txt");
+            FileInputStream la = new FileInputStream(fileName);
             in = new ObjectInputStream(la);
             List<FavouriteSong> favouriteSongs = (ArrayList<FavouriteSong>) in.readObject();
             return favouriteSongs;
@@ -42,23 +42,22 @@ public class CommandFav implements Command {
 
     /**
      * Method used to serialize songs in a file
-     * @param file which will contain the serialised songs
+     * @param pathSong which will contain the serialised songs
      * @param mark string
      * @throws MyException
      */
 
-    private void addFavorites(File file, String mark) throws MyException{
-        List<FavouriteSong> favouriteSongs = deserialize();
+    private void addFavorites(String serPath, File pathSong, String mark) throws MyException{
+        List<FavouriteSong> favouriteSongs = deserialize(new File(serPath));
         if (favouriteSongs != null) {
-            favouriteSongs.add(new FavouriteSong(file, mark));
+            favouriteSongs.add(new FavouriteSong(pathSong, mark));
             try {
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("serializedListOfSongs.txt"));
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(serPath));
                 out.flush();
                 out.writeObject(favouriteSongs);
                 out.close();
             } catch (IOException e) {
-                // TODO: 13.03.2016 adauga exceptie nu a putut fi adaugat la lista de favorite
-                throw new MyException("Ooops, I was not able to add this to list of favorites.",e);
+                throw new MyException("I was not able to add this to list of favorites.", e);
             }
         }
     }
@@ -67,111 +66,19 @@ public class CommandFav implements Command {
      * method that performs the add songs to list of favorites
      * @param commandArguments i.e user input
      */
-
-    public void execute(String[] commandArguments) {
+    public boolean execute(String[] commandArguments) throws MyException {
         File file = pathManager.getFilePath(commandArguments[1]);
-        if (file != null && PathManager.isAudio(file)) {
+        if (file != null && pathManager.isAudio(file)) {
             try {
-
-
-                addFavorites(file, commandArguments[2]);
-            }catch (MyException myexception){
-                System.out.print(myexception.getMessage() + " " + myexception.getCause());
+                addFavorites(serializedListOfSongs, file, commandArguments[2]);
+            }
+            catch (IndexOutOfBoundsException exception) {
+                throw new MyException("Too few arguments",exception);
             }
         }
         else {
-            System.out.println("Path is not valid or file is not audio.");
+            throw new MyException("Path is not valid or file is not audio.");
         }
+        return true;
     }
 }
-=======
-package commands;
-import Exception.*;
-
-import utils.FavouriteSong;
-import utils.PathManager;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
-
-/**
- * Class used for implementing the fav command, which serializes a list of favorite songs and also provides functionality for deserialization.
- */
-public class CommandFav implements Command {
-    protected final PathManager pathManager;
-
-    public CommandFav(PathManager pathManager) {
-        this.pathManager = pathManager;
-    }
-
-    /**
-     * Method which provided the deserialization functionality
-     * @return list of favorite songs
-     */
-
-    protected List<FavouriteSong> deserialize() {
-        ObjectInputStream in = null;
-        try {
-            FileInputStream la = new FileInputStream("serializedListOfSongs.txt");
-            in = new ObjectInputStream(la);
-            List<FavouriteSong> favouriteSongs = (ArrayList<FavouriteSong>) in.readObject();
-            return favouriteSongs;
-        } catch (IOException e) {
-           e.printStackTrace();
-        }catch (ClassNotFoundException e){
-            System.out.print(e.getCause()+ e.getMessage());
-        }
-        return new ArrayList<FavouriteSong>();
-    }
-
-    /**
-     * Method used to serialize songs in a file
-     * @param file which will contain the serialised songs
-     * @param mark string
-     * @throws MyException
-     */
-
-    private void addFavorites(File file, String mark) throws MyException{
-        List<FavouriteSong> favouriteSongs = deserialize();
-        if (favouriteSongs != null) {
-            favouriteSongs.add(new FavouriteSong(file, mark));
-            try {
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("serializedListOfSongs.txt"));
-                out.flush();
-                out.writeObject(favouriteSongs);
-                out.close();
-            } catch (IOException e) {
-                // TODO: 13.03.2016 adauga exceptie nu a putut fi adaugat la lista de favorite
-                throw new MyException("Ooops, I was not able to add this to list of favorites.",e);
-            }
-        }
-    }
-
-    /**
-     * method that performs the add songs to list of favorites
-     * @param commandArguments i.e user input
-     */
-
-    public void execute(String[] commandArguments) {
-        File file = pathManager.getFilePath(commandArguments[1]);
-        if (file != null && PathManager.isAudio(file)) {
-            try {
-
-
-                addFavorites(file, commandArguments[2]);
-            }
-            catch (IndexOutOfBoundsException exept) {
-                System.out.println("Numar de argumente insuficient.");
-            }
-            catch (MyException myexception){
-                System.out.print(myexception.getMessage() + " " + myexception.getCause());
-            }
-        }
-        else {
-            System.out.println("Path is not valid or file is not audio.");
-        }
-    }
-}
->>>>>>> Refactoring

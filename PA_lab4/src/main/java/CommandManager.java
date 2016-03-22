@@ -38,12 +38,16 @@ public class CommandManager {
                 command = commandFactory.create(pathManager, currentCommand);
             } catch (MyException e) {
                 System.out.print(e.getMessage() + "\n");
+            }  catch (Exception e) {
+                System.out.print("An unexpected error occurred.");
             }
             if (command != null) {
                 try {
                     command.execute(currentCommand);
-                }catch (MyException e){
+                } catch (MyException e){
                     System.out.print(e.getMessage() + e.getCause() + "\n");
+                } catch (Exception e) {
+                    System.out.print("An unexpected error occurred.");
                 }
             }
         }

@@ -3,7 +3,7 @@ package commands;
 import utils.PathManager;
 
 /**
- * Created by Diana on 13.03.2016.
+ * Class used for implementing the pwd command.
  */
 public class CommandPWD implements Command {
     PathManager pathManager;
@@ -11,7 +11,8 @@ public class CommandPWD implements Command {
         this.pathManager = pathManager;
     }
 
-    public void execute(String[] commandArguments) {
+    public boolean execute(String[] commandArguments) {
         System.out.println(pathManager.getPath());
+        return true;
     }
 }

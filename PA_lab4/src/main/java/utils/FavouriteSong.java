@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.Serializable;
 
 /**
- * Created by Diana on 13.03.2016.
+ * This class handles an object that contains a favourite song.
+ *
  */
-public class FavouriteSong implements Serializable{
+public class FavouriteSong implements Serializable {
     private File file;
     private String mark;
 

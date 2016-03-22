@@ -1,11 +1,12 @@
 package utils;
 
+import Exception.MyException;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 
 /**
- * Created by Diana on 12.03.2016.
+ * Handles the path of all commands.
  */
 public class PathManager {
     private File file;
@@ -30,6 +31,9 @@ public class PathManager {
         this.file = file;
     }
 
+    /**
+     * Computes the path taking in account the current path and a string that contains information about the command.
+     */
     private File processNewPath(String s) {
         String path = s.replace('%', ' ');
 
@@ -39,31 +43,35 @@ public class PathManager {
         return new File(path);
     }
 
-
-    public File getFilePath(String s) {
+    /**
+     * Computes the path for a command that does not change the current directory
+     * @param s the command parameter
+     * @return a file object
+     * @throws MyException
+     */
+    public File getFilePath(String s) throws MyException {
         File newFile = processNewPath(s);
-
         if (newFile.exists()) {
             return newFile;
         }
-
-        System.out.println("The path is not valid");
-        return null;
+        throw new MyException("The path is not valid");
     }
 
-    public File changePath(String s) {
+    public File changePath(String s) throws MyException {
         File newFile = processNewPath(s);
-
         if (newFile.exists() && newFile.isDirectory()) {
             file = newFile;
             return newFile;
         }
-
-        System.out.println("The path is wrong.");
-        return file;
+        throw new MyException("The path is not valid");
     }
 
-    public static boolean isAudio(File file) {
+    /**
+     * Tests is a file is an audio file
+     * @param  file is the file that will be tested
+     * @return true if the file is an audio file and false otherwise
+     */
+    public boolean isAudio(File file) {
         String extension = FilenameUtils.getExtension(file.toString());
         final String extensions = "WAV, MP3, VOX, RAW, WMA";
         return extension.length() == 3 && extensions.contains(extension.toUpperCase());
