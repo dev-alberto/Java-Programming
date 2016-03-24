@@ -46,7 +46,6 @@ public class CommandFav implements Command {
      * @param mark string
      * @throws MyException
      */
-
     private void addFavorites(String serPath, File pathSong, String mark) throws MyException{
         List<FavouriteSong> favouriteSongs = deserialize(new File(serPath));
         if (favouriteSongs != null) {

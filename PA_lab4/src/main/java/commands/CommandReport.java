@@ -20,6 +20,10 @@ public class CommandReport extends CommandFav {
     public CommandReport(PathManager pathManager) {
         super(pathManager);
     }
+    public static final String reportName = "Report.xlsx";
+    public XSSFWorkbook getWorkbook() {
+        return new XSSFWorkbook();
+    }
 
     /**
      * Generates users favourite songs report.
@@ -27,7 +31,7 @@ public class CommandReport extends CommandFav {
      */
     public boolean execute(String[] commandArguments) throws MyException {
         //Create blank workbook
-        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFWorkbook workbook = getWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet("Favourite Songs");
         //Create row object
@@ -48,14 +52,13 @@ public class CommandReport extends CommandFav {
         }
         //Write the workbook in file system
         try {
-            FileOutputStream out = new FileOutputStream(new File("Report.xlsx"));
+            FileOutputStream out = new FileOutputStream(new File(CommandReport.reportName));
             workbook.write(out);
             out.close();
-            System.out.println("Report.xlsx written successfully");
+            return true;
         }
         catch (IOException ioExeption) {
             throw new MyException("The report was't created.", ioExeption);
         }
-        return true;
     }
 }

@@ -24,8 +24,7 @@ public class CommandFind implements Command  {
         Path start = FileSystems.getDefault().getPath(pathManager.getPath());
         String charactersInSongName = "([a-zA-Z0-9& ]|-)*";
         try{
-            Pattern pattern = Pattern.compile(charactersInSongName + commandArguments[1] +
-                charactersInSongName + ".(WAV|MP3|VOX|RAW|WMA|wav|mp3|vox|row|wma)");
+            Pattern pattern = Pattern.compile("[A-Z]*: " + commandArguments[1]);
             Files.walk(start)
                     .filter(path -> path.toFile().isFile())
                     .filter(path -> path.toString().matches(pattern.toString()))

@@ -29,26 +29,21 @@ public class CommandManager {
      */
 
     public void execute(String[] currentCommand) {
-        if (currentCommand[0].equals("help")) {
-            printHelpMenu();
+        Command command = null;
+        try {
+            command = commandFactory.create(pathManager, currentCommand);
+        } catch (MyException e) {
+            System.out.print(e.getMessage() + "\n");
+        }  catch (Exception e) {
+            System.out.print("An unexpected error occurred.");
         }
-        else {
-            Command command = null;
+        if (command != null) {
             try {
-                command = commandFactory.create(pathManager, currentCommand);
-            } catch (MyException e) {
-                System.out.print(e.getMessage() + "\n");
-            }  catch (Exception e) {
+                command.execute(currentCommand);
+            } catch (MyException e){
+                System.out.print(e.getMessage() + e.getCause() + "\n");
+            } catch (Exception e) {
                 System.out.print("An unexpected error occurred.");
-            }
-            if (command != null) {
-                try {
-                    command.execute(currentCommand);
-                } catch (MyException e){
-                    System.out.print(e.getMessage() + e.getCause() + "\n");
-                } catch (Exception e) {
-                    System.out.print("An unexpected error occurred.");
-                }
             }
         }
     }

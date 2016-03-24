@@ -55,7 +55,6 @@ public class CommandPlayTest extends TestCase {
         play.execute(args);
 
         String expectedOutput  = "The file was open.\r\n";
-
         assertEquals(outContent.toString(), expectedOutput);
     }
 
