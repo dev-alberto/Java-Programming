@@ -88,7 +88,7 @@ public class CommandINFO implements Command {
     private static String getPropertyValue(Metadata metadata, String property) {
         String[] metadataNames = metadata.names();
         for (String name : metadataNames) {
-            if (name.toUpperCase().equals(property.toUpperCase())) {
+            if (name.toUpperCase().contains(property.toUpperCase())) {
                 return metadata.get(name);
             }
         }
