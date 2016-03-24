@@ -1,12 +1,9 @@
 import utils.PathManager;
 
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import Exception.*;
 
 /**
  * Class used to provide the functionality of a shell
@@ -32,7 +29,7 @@ public class MyAudioLibraryManager {
         CommandManager commandManager = new CommandManager();
             do {
                 line = console.nextLine();
-                currentCommand = line.split(" ");
+                currentCommand = line.split("#");
 
                 if (!currentCommand[0].equals("exit")) {
                 commandManager.execute(currentCommand);
