@@ -22,13 +22,13 @@ public class Listener implements ActionListener
     MainFrame mainFrame;
     MySplitPane mySplitPane;
 
-
     public Listener()
     {
         mainFrame=new MainFrame();
         mytoolBar=new MytoolBar();
         mySplitPane=new MySplitPane(mytoolBar,mainFrame.getAudioFileManager().getTree());
         mainFrame.getAudioFileManager().add(mySplitPane);
+        mainFrame.setContentPane(mainFrame.getAudioFileManager());
         mytoolBar.getCd().addActionListener(this);
         mytoolBar.getPlay().addActionListener(this);
         mytoolBar.getFind().addActionListener(this);
