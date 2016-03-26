@@ -8,20 +8,17 @@ import javax.swing.*;
  */
 
 public class MainFrame extends JFrame {
+    private MyTreeManager audioFileManager;
 
-    private AudioFileManager audioFileManager;
-
-    public MainFrame()
-    {
+    public MainFrame() {
         super("Audio Player");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        audioFileManager=new AudioFileManager();
+        audioFileManager=new MyTreeManager();
         setMinimumSize(this.getSize());
         setLocationByPlatform(true);
         setLocationRelativeTo(null);
-        //setContentPane(audioFileManager);
-        pack();
         setVisible(true);
     }
-    public AudioFileManager getAudioFileManager(){return audioFileManager;}
+
+    public MyTreeManager getAudioFileManager(){return audioFileManager;}
 }
