@@ -14,6 +14,9 @@ import java.awt.event.ActionListener;
 public class Listener implements ActionListener {
     MySplitPane splitPane;
     PathManager pathManager;
+    private static String[] args = new String[3];
+    private static String solution = null;
+    private static Command command = null;
 
     public Listener() {
         splitPane = new MySplitPane();
@@ -24,52 +27,65 @@ public class Listener implements ActionListener {
         splitPane.getMyCommandManagerPanel().getMyButtonPanel().getFav().addActionListener(this);
         splitPane.getMyCommandManagerPanel().getMyButtonPanel().getInfo().addActionListener(this);
         splitPane.getMyCommandManagerPanel().getMyButtonPanel().getFind().addActionListener(this);
+        splitPane.getMyCommandManagerPanel().getMyButtonPanel().getList().addActionListener(this);
+        splitPane.getMyCommandManagerPanel().getButtonExecute().addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         Object object=actionEvent.getSource();
-
         try {
-            String[] args = new String[3];
-            String solution = null;
-            args[1] = splitPane.getMyCommandManagerPanel().getMyTextPanel().getFilePath().getTextField().getText();
-            args[2] = splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().getTextField().getText();
-
+            splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().setVisible(true);
+            splitPane.getMyCommandManagerPanel().getMyTextPanel().getFilePath().setVisible(true);
             if (object instanceof ButtonCD) {
                 args[0] = "cd";
-                Command cd = new CommandCD(pathManager);
-                solution = cd.execute(args);
+                command = new CommandCD(pathManager);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().setVisible(false);
             }
             if (object instanceof ButtonPlay) {
                 args[0] = "play";
-                Command play = new CommandPlay(pathManager);
-                solution = play.execute(args);
+                command = new CommandPlay(pathManager);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().setVisible(false);
             }
             if (object instanceof ButtonFav) {
                 args[0] = "fav";
-                Command fav = new CommandFav(pathManager);
-                solution = fav.execute(args);
+                command = new CommandFav(pathManager);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().setVisible(true);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().getLabel().setText("Mark:");
             }
             if (object instanceof ButtonReport) {
                 args[0] = "report";
-                Command report = new CommandReport(pathManager);
-                solution = report.execute(args);
+                command = new CommandReport(pathManager);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().setVisible(false);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getFilePath().setVisible(false);
             }
             if (object instanceof ButtonInfo) {
                 args[0] = "info";
-                Command info = new CommandINFO(pathManager);
-                solution = info.execute(args);
+                command = new CommandINFO(pathManager);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().setVisible(false);
             }
             if (object instanceof ButtonFind) {
                 args[0] = "find";
-                Command find = new CommandFind(pathManager);
-                solution = find.execute(args);
+                command = new CommandFind(pathManager);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().setVisible(true);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getFilePath().getLabel().setText("Keyword");
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().getLabel().setText("Value");
             }
-
-            if (solution != null) {
-                splitPane.getMyCommandManagerPanel().getTextArea().setText(solution);
+            if (object instanceof ButtonList) {
+                args[0] = "list";
+                command = new CommandList(pathManager);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().setVisible(false);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getFilePath().setVisible(false);
             }
+            if (object instanceof ButtonExecute) {
+                args[1] = splitPane.getMyCommandManagerPanel().getMyTextPanel().getFilePath().getTextField().getText();
+                args[2] = splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().getTextField().getText();
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().setVisible(false);
+                splitPane.getMyCommandManagerPanel().getMyTextPanel().getFilePath().setVisible(false);
+                splitPane.getMyCommandManagerPanel().getTextArea().setText(command.execute(args));
+            }
+            splitPane.getMyCommandManagerPanel().getMyTextPanel().getFilePath().getTextField().setText("");
+            splitPane.getMyCommandManagerPanel().getMyTextPanel().getOption().getTextField().setText("");
         }catch (Exception e) {
         }
     }
