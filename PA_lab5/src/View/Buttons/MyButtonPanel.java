@@ -28,6 +28,7 @@ public class MyButtonPanel extends JPanel
         add(cd);
         add(list);
         add(play);
+        add(info);
         add(find);
         add(fav);
         add(report);

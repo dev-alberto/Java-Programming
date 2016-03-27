@@ -14,17 +14,32 @@ import java.awt.*;
  * Created by Diana on 26.03.2016.
  */
 public class MyCommandManagerPanel extends JPanel {
-    JPanel myButtonPanel;
-    JPanel myTextPanel;
+    MyButtonPanel myButtonPanel;
+    MyTextPanel myTextPanel;
+    JTextArea textArea;
+
+    public MyButtonPanel getMyButtonPanel() {
+        return myButtonPanel;
+    }
+
+    public JTextArea getTextArea() {
+        return textArea;
+    }
+
+    public MyTextPanel getMyTextPanel() {
+        return myTextPanel;
+    }
 
     public MyCommandManagerPanel() {
         myTextPanel = new MyTextPanel();
         myButtonPanel = new MyButtonPanel();
-        GridLayout gridLayout = new GridLayout(2, 1);
+        textArea = new JTextArea(1, 1);
+        GridLayout gridLayout = new GridLayout(3, 1);
         gridLayout.setVgap(0);
         setLayout(gridLayout);
         add(myTextPanel);
         add(myButtonPanel);
+        add(textArea);
     }
 
 

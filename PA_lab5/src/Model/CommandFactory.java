@@ -1,16 +1,16 @@
-package Model;
-import Model.Exception.*;
-import Model.utils.PathManager;
+package commands;
+
+import utils.PathManager;
+import Exception.*;
 
 /**
- * Created by alber_000 on 3/21/2016.
+ * Factory design pattern. Class used to create different type of object, depending on the user's input.
  */
 public class CommandFactory {
     public Command create(PathManager pathManager, String[] commandArguments) throws MyException {
         if (commandArguments[0].equals("cd")) {
             return new CommandCD(pathManager);
         }
-        /*
         if (commandArguments[0].equals("pwd")) {
             return new CommandPWD(pathManager);
         }
@@ -32,7 +32,6 @@ public class CommandFactory {
         if(commandArguments[0].equals("find")){
             return new CommandFind(pathManager);
         }
-        */
         throw new MyException("command not found,please try again");
     }
 }

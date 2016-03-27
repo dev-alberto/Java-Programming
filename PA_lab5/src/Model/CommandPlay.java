@@ -1,18 +1,24 @@
-package Model;
-import Model.Exception.*;
-import Model.utils.PathManager;
+package commands;
+
+import Exception.MyException;
+import utils.PathManager;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by alber_000 on 3/22/2016.
+ * Class used to implement the play functionality, which takes a path and plays the song.
  */
 public class CommandPlay implements Command {
     private PathManager pathManager;
+
     public CommandPlay(PathManager pathManager) {
         this.pathManager = pathManager;
+    }
+
+    public Desktop createDesktop() throws MyException {
+        return Desktop.getDesktop();
     }
 
     /**
@@ -20,13 +26,13 @@ public class CommandPlay implements Command {
      * @param commandArguments user input
      * @throws MyException
      */
-    public void execute(String[] commandArguments) throws MyException {
+    public boolean execute(String[] commandArguments) throws MyException {
         try {
             File file = pathManager.getFilePath(commandArguments[1]);
-            if (file != null && PathManager.isAudio(file)) {
-                Desktop desktop = Desktop.getDesktop();
+            if (file != null && pathManager.isAudio(file)) {
+                Desktop desktop = createDesktop();
                 desktop.open(file);
-                System.out.println(file.toString());
+                System.out.println("The file was open.");
             }
             else {
                 System.out.println("Path is not valid or file is not audio.");
@@ -35,12 +41,13 @@ public class CommandPlay implements Command {
             throw new MyException("This file is not in current directory",ioException);
         }
         catch (IndexOutOfBoundsException indexOutOfBandsExeption){
-            // TODO: 13.03.2016 arunca exceptie cu nr de argumente gresit
-
             throw new MyException("Wrong number of arguments",indexOutOfBandsExeption);
         }
-        catch (HeadlessException headless){
-            headless.printStackTrace();
-        }
+        return true;
+    }
+
+    public boolean setPathManager(PathManager pathManager) {
+        this.pathManager = pathManager;
+        return true;
     }
 }

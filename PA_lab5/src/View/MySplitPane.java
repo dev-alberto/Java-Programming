@@ -8,16 +8,25 @@ import java.awt.*;
  */
 public class MySplitPane extends JSplitPane {
     MainFrame mainFrame;
-    JPanel mycommandManagerPanel;
+    MyCommandManagerPanel myCommandManagerPanel;
+
+    public MyCommandManagerPanel getMyCommandManagerPanel() {
+        return myCommandManagerPanel;
+    }
+
+    public MainFrame getMainFrame() {
+        return mainFrame;
+    }
+
     public MySplitPane() {
         super(JSplitPane.HORIZONTAL_SPLIT);
         mainFrame=new MainFrame();
-        mycommandManagerPanel = new MyCommandManagerPanel();
+        myCommandManagerPanel = new MyCommandManagerPanel();
         mainFrame.setMinimumSize(new Dimension(700,400));
         mainFrame.getAudioFileManager().add(this);
         mainFrame.setContentPane(mainFrame.getAudioFileManager());
         mainFrame.setVisible(true);
-        add(mycommandManagerPanel);
+        add(myCommandManagerPanel);
         add(mainFrame.getAudioFileManager().getTree());
         setResizeWeight(0.75);
         setVisible(true);

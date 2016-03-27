@@ -7,8 +7,16 @@ import java.awt.*;
  * Created by Diana on 26.03.2016.
  */
 public class MyTextPanel extends JPanel {
-    JPanel filePath;
-    JPanel option;
+    MyTextField filePath;
+    MyTextField option;
+
+    public MyTextField getFilePath() {
+        return filePath;
+    }
+
+    public MyTextField getOption() {
+        return option;
+    }
 
     public MyTextPanel() {
         filePath = new MyTextField("File path");
